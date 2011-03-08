@@ -13,17 +13,12 @@ module SpreeRelatedProducts
           RelationType.find_all_by_applies_to(self.to_s, :order => :name)
         end
 
-        # a total hack to fix this error in ruby 1.9
-        #
-        #   undefined local variable or method `to_ary' for #<Product:0x0000010655ad28>
-        #
-        def to_ary
-          nil
-        end
-
         def method_missing(method, *args)
           relation_type =  self.class.relation_types.detect { |rt| rt.name.downcase.gsub(" ", "_").pluralize == method.to_s.downcase }
         
+          # Fix for Ruby 1.9
+          raise NoMethodError if method == :to_ary
+          
           if relation_type.nil?
             super
           else
