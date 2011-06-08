@@ -50,7 +50,7 @@
         if($('#add_variant_id').val() == ''){ return false; }
         update_target = jQuery(this).attr("data-update");
 
-        jQuery.ajax({ dataType: 'script', url: this.href, type: "POST",
+        jQuery.ajax({ url: this.href, type: "POST",
             data: {"relation[related_to_type]" : "Product",
                    "relation[related_to_id]": $('#add_variant_id').val(),
                    "relation[relation_type_id]": $('#add_type').val(),
