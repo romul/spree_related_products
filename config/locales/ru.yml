@@ -1,0 +1,13 @@
+ru:
+  new_relation_type: Новая взаимосвязь
+  discount_amount: Размер скидки
+  related_product_discount: Скидка на связанный товар
+  relation_type: Взаимосвязь
+  relation_types: Взаимосвязи товаров
+  applies_to: Применяется к
+  editing_relation_type: Редактирование взаимосвязи
+  related_products: Сопутствующие товары
+  add_related_product: Добавить связанный товар
+  name_or_sku: Наименование или артикул
+  manage_relation_types: Управление взаимосвязями товаров.
+  no_relation_types: Вам необходимо сначала настроить Взаимосвязи товаров.
