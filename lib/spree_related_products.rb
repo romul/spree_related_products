@@ -10,23 +10,15 @@ module SpreeRelatedProducts
         has_many :relations, :as => :relatable
 
         def self.relation_types
-          RelationType.find_all_by_applies_to(self.to_s, :order => :name)
+          RelationType.where(:applies_to => self.name).order(:name)
         end
 
-        def method_missing(method, *args)
-          relation_type =  self.class.relation_types.detect { |rt| rt.name.downcase.gsub(" ", "_").pluralize == method.to_s.downcase }
-        
-          # Fix for Ruby 1.9
-          raise NoMethodError if method == :to_ary
-          
-          if relation_type.nil?
-            super
-          else
-            relations.find_all_by_relation_type_id(relation_type.id).map(&:related_to).select {|product| product.deleted_at.nil? && product.available_on <= Time.now()}
-          end
-        
+        relation_types.each do |rt|
+          method_name = rt.name.downcase.gsub(" ", "_").pluralize
+          define_method method_name do
+            relations.where(:relation_type_id => rt.id).map(&:related_to).select {|product| product.deleted_at.nil? && product.available_on <= Time.now()}
+          end unless new.respond_to?(method_name)
         end
-        
       end
 
       Admin::ProductsController.class_eval do
@@ -43,4 +35,3 @@ module SpreeRelatedProducts
 
   end
 end
-
